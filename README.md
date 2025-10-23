@@ -47,3 +47,4 @@ This document defines the entities, attributes, and relationships in the Airbnb-
 
 ## ER Diagram
 ![ER Diagram](./airbnb_erd.png)
+Commit new file
