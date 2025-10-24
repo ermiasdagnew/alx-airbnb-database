@@ -46,6 +46,7 @@ This document defines the entities, attributes, and relationships in the Airbnb-
 - User → Message (1 to many, as sender/recipient)
 
 ## ER Diagram
-![ER Diagram](./airbnb_erd.png)
+![ER Diagram](<img width="711" height="622" alt="Airbnb Database ER Diagram drawio" src="https://github.com/user-attachments/assets/a5e2f615-9a2d-44f6-8f7f-11c4e8712b50" />
+)
 Commit new file
 alx-airbnb-database/ERD/requirements.md
