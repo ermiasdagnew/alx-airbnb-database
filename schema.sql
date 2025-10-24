@@ -1,0 +1,72 @@
+-- Airbnb Clone Database Schema
+-- This file creates all the database tables
+
+-- 1. User Table
+CREATE TABLE User (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20)
+);
+
+-- 2. Location Table
+CREATE TABLE Location (
+    zipcode VARCHAR(10) PRIMARY KEY,
+    city VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL
+);
+
+-- 3. Property Table
+CREATE TABLE Property (
+    property_id SERIAL PRIMARY KEY,
+    host_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    zipcode VARCHAR(10) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (host_id) REFERENCES User(user_id),
+    FOREIGN KEY (zipcode) REFERENCES Location(zipcode)
+);
+
+-- 4. PropertyAmenities Table
+CREATE TABLE PropertyAmenities (
+    property_id INT NOT NULL,
+    amenity VARCHAR(50) NOT NULL,
+    PRIMARY KEY (property_id, amenity),
+    FOREIGN KEY (property_id) REFERENCES Property(property_id)
+);
+
+-- 5. Booking Table
+CREATE TABLE Booking (
+    booking_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    property_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (property_id) REFERENCES Property(property_id)
+);
+
+-- 6. Review Table
+CREATE TABLE Review (
+    review_id SERIAL PRIMARY KEY,
+    booking_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+);
+
+-- 7. Payment Table
+CREATE TABLE Payment (
+    payment_id SERIAL PRIMARY KEY,
+    booking_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    method VARCHAR(20),
+    status VARCHAR(20) DEFAULT 'pending',
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+);
+
+-- 8. Indexes (for faster search)
+CREATE INDEX idx_booking_user ON Booking(user_id);
+CREATE INDEX idx_booking_property ON Booking(property_id);
+CREATE INDEX idx_property_zipcode ON Property(zipcode);
