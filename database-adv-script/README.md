@@ -1,32 +1,23 @@
-# SQL Subqueries Practice
+# SQL Aggregations and Window Functions Practice
 
 ## Project Overview
-This project contains SQL queries to practice **correlated** and **non-correlated subqueries**. It is part of the ALX Airbnb Database course.
+This project contains SQL queries to practice **aggregation functions** and **window functions** as part of the ALX Airbnb Database course.  
+
+The goal is to analyze bookings data by users and properties, and to rank properties based on popularity.
 
 ## Objective
-- Write a **non-correlated subquery** to filter properties by average rating.  
-- Write a **correlated subquery** to find users with more than 3 bookings.
-
-## Instructions
-1. **Non-correlated Subquery:**  
-   Find all properties where the average rating is greater than 4.0.
-
-2. **Correlated Subquery:**  
-   Find all users who have made more than 3 bookings.
+- Count the total number of bookings made by each user using `COUNT` and `GROUP BY`.  
+- Rank properties based on the total number of bookings using a window function (`RANK()`).
 
 ## Files
-- `subqueries.sql` – Contains the SQL queries.  
+- `aggregations_and_window_functions.sql` – Contains the SQL queries for the assignment.  
 - `README.md` – This file explaining the project.
 
 ## Example Queries
 
-### Non-Correlated Subquery
+### 1️⃣ Total bookings by each user
 ```sql
-SELECT id AS property_id, name AS property_name
-FROM properties
-WHERE id IN (
-    SELECT property_id
-    FROM reviews
-    GROUP BY property_id
-    HAVING AVG(rating) > 4.0
-);
+SELECT u.id AS user_id, u.name AS user_name, COUNT(b.id) AS total_bookings
+FROM users u
+LEFT JOIN bookings b ON u.id = b.user_id
+GROUP BY u.id, u.name;
